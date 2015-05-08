@@ -1,10 +1,15 @@
-# ant
+# gradle
 build/
+.gradle
+
 # maven
 target/
 
 # intellij
 overlays/
 .idea/
+*.ipr
 *.iml
 *.iws
+
+
