@@ -410,6 +410,7 @@ public strictfp class S2CellUnion implements S2Region, Iterable<S2CellId> {
         expand(Math.min(minLevel + maxLevelDiff, radiusLevel));
     }
 
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
     public S2Region clone() {
         S2CellUnion copy = new S2CellUnion();

@@ -593,6 +593,7 @@ public final strictfp class S2LatLngRect implements S2Region {
     // //////////////////////////////////////////////////////////////////////
     // S2Region interface (see {@code S2Region} for details):
 
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
     public S2Region clone() {
         return new S2LatLngRect(this.lo(), this.hi());

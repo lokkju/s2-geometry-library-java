@@ -16,8 +16,6 @@
 
 package com.google.common.geometry;
 
-import javax.annotation.Nullable;
-
 /**
  * The area of an interior, i.e. the region on the left side of an odd
  * number of loops and optionally a centroid.
@@ -32,7 +30,7 @@ public final class S2AreaCentroid {
     private final double area;
     private final S2Point centroid;
 
-    public S2AreaCentroid(double area, @Nullable S2Point centroid) {
+    public S2AreaCentroid(double area, S2Point centroid) {
         this.area = area;
         this.centroid = centroid;
     }
@@ -41,7 +39,6 @@ public final class S2AreaCentroid {
         return area;
     }
 
-    @Nullable
     public S2Point getCentroid() {
         return centroid;
     }

@@ -336,7 +336,7 @@ public strictfp class S2PolygonBuilderTest extends GeometryTestCase {
     }
 
     boolean evalTristate(int state) {
-        return (state > 0) ? true : (state < 0) ? false : (RANDOM_GENERATOR.nextDouble() > 0.5);
+        return (state > 0) || (state >= 0) && (RANDOM_GENERATOR.nextDouble() > 0.5);
     }
 
     boolean testBuilder(TestCase test) {

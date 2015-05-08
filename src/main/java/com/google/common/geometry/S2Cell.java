@@ -258,6 +258,7 @@ public final strictfp class S2Cell implements S2Region {
     // //////////////////////////////////////////////////////////////////////
     // S2Region interface (see {@code S2Region} for details):
 
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
     public S2Region clone() {
         S2Cell clone = new S2Cell();
