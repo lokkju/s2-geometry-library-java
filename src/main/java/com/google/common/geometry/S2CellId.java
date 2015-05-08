@@ -756,8 +756,7 @@ public final strictfp class S2CellId implements Comparable<S2CellId> {
             bits = getBits(n, i, j, k, bits);
         }
 
-        S2CellId s = new S2CellId((((n[1] << 32) + n[0]) << 1) + 1);
-        return s;
+        return new S2CellId((((n[1] << 32) + n[0]) << 1) + 1);
     }
 
     private static int getBits(long[] n, int i, int j, int k, int bits) {

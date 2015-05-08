@@ -132,11 +132,7 @@ public abstract strictfp class S2EdgeIndex {
         for (int i = 0; i < indices.length; i++) {
             indices[i] = i;
         }
-        Arrays.sort(indices, new Comparator<Integer>() {
-            public int compare(Integer index1, Integer index2) {
-                return S2EdgeIndex.compare(cells[index1], edges[index1], cells[index2], edges[index2]);
-            }
-        });
+        Arrays.sort(indices, (index1, index2) -> compare(cells[index1], edges[index1], cells[index2], edges[index2]));
         // copy the cells and edges in the order given by the sorted list of indices
         long[] newCells = new long[cells.length];
         int[] newEdges = new int[edges.length];
@@ -232,7 +228,7 @@ public abstract strictfp class S2EdgeIndex {
 
         // Edge references are inserted into the map once for each covering cell, so
         // absorb duplicates here
-        Set<Integer> uniqueSet = new HashSet<Integer>();
+        Set<Integer> uniqueSet = new HashSet<>();
         getEdgesInParentCells(cover, uniqueSet);
 
         // TODO(user): An important optimization for long query
@@ -556,7 +552,7 @@ public abstract strictfp class S2EdgeIndex {
          * All the candidates obtained by getCandidates() when we are using a
          * quad-tree (i.e. isBruteForce = false).
          */
-        ArrayList<Integer> candidates;
+        final ArrayList<Integer> candidates;
 
         /**
          * Index within array above. We have: currentIndex =

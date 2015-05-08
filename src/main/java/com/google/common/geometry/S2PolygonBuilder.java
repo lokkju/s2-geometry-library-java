@@ -20,10 +20,7 @@ import com.google.common.collect.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * This is a simple class for assembling polygons out of edges. It requires that
@@ -53,13 +50,13 @@ import java.util.Stack;
 public final strictfp class S2PolygonBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(S2PolygonBuilder.class);
 
-    private Options options;
+    private final Options options;
 
     /**
      * The current set of edges, grouped by origin. The set of destination
      * vertices is a multiset so that the same edge can be present more than once.
      */
-    private Map<S2Point, Multiset<S2Point>> edges;
+    private final Map<S2Point, Multiset<S2Point>> edges;
 
     /**
      * Default constructor for well-behaved polygons. Uses the DIRECTED_XOR options.
@@ -71,7 +68,7 @@ public final strictfp class S2PolygonBuilder {
 
     public S2PolygonBuilder(Options options) {
         this.options = options;
-        this.edges = Maps.newHashMap();
+        this.edges = new HashMap<>();
     }
 
     public enum Options {
@@ -348,9 +345,7 @@ public final strictfp class S2PolygonBuilder {
         // If edges are undirected, then all loops are already CCW. Otherwise we
         // need to make sure the loops are normalized.
         if (!options.getUndirectedEdges()) {
-            for (int i = 0; i < loops.size(); ++i) {
-                loops.get(i).normalize();
-            }
+            loops.forEach(com.google.common.geometry.S2Loop::normalize);
         }
         if (options.getValidate() && !S2Polygon.isValid(loops)) {
             if (unusedEdges != null) {
@@ -389,9 +384,8 @@ public final strictfp class S2PolygonBuilder {
     }
 
     protected void dump() {
-        for (S2Point v : edges.keySet()) {
-            dumpEdges(v);
-        }
+        //noinspection Convert2streamapi
+        edges.keySet().forEach(this::dumpEdges);
     }
 
     private void eraseEdge(S2Point v0, S2Point v1) {
@@ -525,6 +519,7 @@ public final strictfp class S2PolygonBuilder {
         for (Map.Entry<S2Point, Multiset<S2Point>> edge : this.edges.entrySet()) {
             S2Point v0 = edge.getKey();
             Multiset<S2Point> vset = edge.getValue();
+            //noinspection Convert2streamapi
             for (S2Point v1 : vset) {
                 if (mergeMap.get(v0) != null || mergeMap.get(v1) != null) {
 
@@ -539,9 +534,9 @@ public final strictfp class S2PolygonBuilder {
         // Now erase all the old edges, and add all the new edges. This will
         // automatically take care of any XORing that needs to be done, because
         // EraseEdge also erases the sibiling of undirected edges.
-        for (int i = 0; i < edgesCopy.size(); ++i) {
-            S2Point v0 = edgesCopy.get(i).getStart();
-            S2Point v1 = edgesCopy.get(i).getEnd();
+        for (S2Edge anEdgesCopy : edgesCopy) {
+            S2Point v0 = anEdgesCopy.getStart();
+            S2Point v1 = anEdgesCopy.getEnd();
             eraseEdge(v0, v1);
             if (mergeMap.get(v0) != null) {
                 v0 = mergeMap.get(v0);
@@ -574,16 +569,15 @@ public final strictfp class S2PolygonBuilder {
         for (Map.Entry<S2Point, Multiset<S2Point>> edge : edges.entrySet()) {
             index.add(edge.getKey());
             Multiset<S2Point> vset = edge.getValue();
-            for (S2Point v : vset) {
-                index.add(v);
-            }
+            //noinspection Convert2streamapi
+            vset.forEach(index::add);
         }
 
         // Next, we loop through all the vertices and attempt to grow a maximial
         // mergeable group starting from each vertex.
 
         Map<S2Point, S2Point> mergeMap = Maps.newHashMap();
-        Stack<S2Point> frontier = new Stack<S2Point>();
+        Stack<S2Point> frontier = new Stack<>();
         List<S2Point> mergeable = Lists.newArrayList();
 
         for (Map.Entry<S2CellId, MarkedS2Point> entry : index.entries()) {
@@ -625,8 +619,8 @@ public final strictfp class S2PolygonBuilder {
      * the need for additional data structures.
      */
     private class PointIndex extends ForwardingMultimap<S2CellId, MarkedS2Point> {
-        private double searchRadius;
-        private int level;
+        private final double searchRadius;
+        private final int level;
         private final Multimap<S2CellId, MarkedS2Point> delegate = HashMultimap.create();
 
         public PointIndex(double searchRadius) {
@@ -692,7 +686,7 @@ public final strictfp class S2PolygonBuilder {
      * An S2Point that can be marked. Used in PointIndex.
      */
     private class MarkedS2Point {
-        private S2Point point;
+        private final S2Point point;
         private boolean mark;
 
         public MarkedS2Point(S2Point point) {

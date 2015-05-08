@@ -107,36 +107,36 @@ public strictfp class S2PolygonTest extends GeometryTestCase {
         assertContains(NEAR_FAR2, FAR3);
     }
 
-    S2Polygon near10 = makePolygon(NEAR0 + NEAR1);
-    S2Polygon near30 = makePolygon(NEAR3 + NEAR0);
-    S2Polygon near32 = makePolygon(NEAR2 + NEAR3);
-    S2Polygon near3210 = makePolygon(NEAR0 + NEAR2 + NEAR3 + NEAR1);
-    S2Polygon nearH3210 = makePolygon(NEAR0 + NEAR2 + NEAR3 + NEAR_HEMI + NEAR1);
+    final S2Polygon near10 = makePolygon(NEAR0 + NEAR1);
+    final S2Polygon near30 = makePolygon(NEAR3 + NEAR0);
+    final S2Polygon near32 = makePolygon(NEAR2 + NEAR3);
+    final S2Polygon near3210 = makePolygon(NEAR0 + NEAR2 + NEAR3 + NEAR1);
+    final S2Polygon nearH3210 = makePolygon(NEAR0 + NEAR2 + NEAR3 + NEAR_HEMI + NEAR1);
 
-    S2Polygon far10 = makePolygon(FAR0 + FAR1);
-    S2Polygon far21 = makePolygon(FAR2 + FAR1);
-    S2Polygon far321 = makePolygon(FAR2 + FAR3 + FAR1);
-    S2Polygon farH20 = makePolygon(FAR2 + FAR_HEMI + FAR0);
-    S2Polygon farH3210 = makePolygon(FAR2 + FAR_HEMI + FAR0 + FAR1 + FAR3);
+    final S2Polygon far10 = makePolygon(FAR0 + FAR1);
+    final S2Polygon far21 = makePolygon(FAR2 + FAR1);
+    final S2Polygon far321 = makePolygon(FAR2 + FAR3 + FAR1);
+    final S2Polygon farH20 = makePolygon(FAR2 + FAR_HEMI + FAR0);
+    final S2Polygon farH3210 = makePolygon(FAR2 + FAR_HEMI + FAR0 + FAR1 + FAR3);
 
-    S2Polygon south0ab = makePolygon(SOUTH0a + SOUTH0b);
-    S2Polygon south2 = makePolygon(SOUTH2);
-    S2Polygon south210b = makePolygon(SOUTH2 + SOUTH0b + SOUTH1);
-    S2Polygon southH21 = makePolygon(SOUTH2 + SOUTH_HEMI + SOUTH1);
-    S2Polygon southH20abc = makePolygon(SOUTH2 + SOUTH0b + SOUTH_HEMI + SOUTH0a + SOUTH0c);
+    final S2Polygon south0ab = makePolygon(SOUTH0a + SOUTH0b);
+    final S2Polygon south2 = makePolygon(SOUTH2);
+    final S2Polygon south210b = makePolygon(SOUTH2 + SOUTH0b + SOUTH1);
+    final S2Polygon southH21 = makePolygon(SOUTH2 + SOUTH_HEMI + SOUTH1);
+    final S2Polygon southH20abc = makePolygon(SOUTH2 + SOUTH0b + SOUTH_HEMI + SOUTH0a + SOUTH0c);
 
-    S2Polygon nf1n10f2s10abc =
+    final S2Polygon nf1n10f2s10abc =
             makePolygon(SOUTH0c + FAR2 + NEAR1 + NEAR_FAR1 + NEAR0 + SOUTH1 + SOUTH0b + SOUTH0a);
 
-    S2Polygon nf2n2f210s210ab =
+    final S2Polygon nf2n2f210s210ab =
             makePolygon(FAR2 + SOUTH0a + FAR1 + SOUTH1 + FAR0 + SOUTH0b + NEAR_FAR2 + SOUTH2 + NEAR2);
 
-    S2Polygon f32n0 = makePolygon(FAR2 + NEAR0 + FAR3);
-    S2Polygon n32s0b = makePolygon(NEAR3 + SOUTH0b + NEAR2);
+    final S2Polygon f32n0 = makePolygon(FAR2 + NEAR0 + FAR3);
+    final S2Polygon n32s0b = makePolygon(NEAR3 + SOUTH0b + NEAR2);
 
-    S2Polygon adj0 = makePolygon(ADJACENT0);
-    S2Polygon adj1 = makePolygon(ADJACENT1);
-    S2Polygon unAdj = makePolygon(UN_ADJACENT);
+    final S2Polygon adj0 = makePolygon(ADJACENT0);
+    final S2Polygon adj1 = makePolygon(ADJACENT1);
+    final S2Polygon unAdj = makePolygon(UN_ADJACENT);
 
     private void assertRelation(S2Polygon a, S2Polygon b, int contains, boolean intersects) {
         assertEquals(a.contains(b), contains > 0);

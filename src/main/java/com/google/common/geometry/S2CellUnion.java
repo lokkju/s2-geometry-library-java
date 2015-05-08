@@ -35,7 +35,7 @@ public strictfp class S2CellUnion implements S2Region, Iterable<S2CellId> {
     /**
      * The CellIds that form the Union
      */
-    private ArrayList<S2CellId> cellIds = new ArrayList<S2CellId>();
+    private ArrayList<S2CellId> cellIds = new ArrayList<>();
 
     public S2CellUnion() {
     }
@@ -67,7 +67,8 @@ public strictfp class S2CellUnion implements S2Region, Iterable<S2CellId> {
 
     public void initRawIds(ArrayList<Long> cellIds) {
         int size = cellIds.size();
-        this.cellIds = new ArrayList<S2CellId>(size);
+        this.cellIds = new ArrayList<>(size);
+        //noinspection Convert2streamapi
         for (Long id : cellIds) {
             this.cellIds.add(new S2CellId(id));
         }
@@ -81,7 +82,7 @@ public strictfp class S2CellUnion implements S2Region, Iterable<S2CellId> {
      * These methods may be called multiple times.
      */
     public void initRawSwap(ArrayList<S2CellId> cellIds) {
-        this.cellIds = new ArrayList<S2CellId>(cellIds);
+        this.cellIds = new ArrayList<>(cellIds);
         cellIds.clear();
     }
 
@@ -363,7 +364,7 @@ public strictfp class S2CellUnion implements S2Region, Iterable<S2CellId> {
      * Expand(min_fraction, min_distance) method below is easier to use.
      */
     public void expand(int level) {
-        ArrayList<S2CellId> output = new ArrayList<S2CellId>();
+        ArrayList<S2CellId> output = new ArrayList<>();
         long levelLsb = S2CellId.lowestOnBitForLevel(level);
         int i = size() - 1;
         do {
@@ -566,7 +567,7 @@ public strictfp class S2CellUnion implements S2Region, Iterable<S2CellId> {
     public boolean normalize() {
         // Optimize the representation by looking for cases where all subcells of a parent cell are present.
 
-        ArrayList<S2CellId> output = new ArrayList<S2CellId>(cellIds.size());
+        ArrayList<S2CellId> output = new ArrayList<>(cellIds.size());
         output.ensureCapacity(cellIds.size());
         Collections.sort(cellIds);
 

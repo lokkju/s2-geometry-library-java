@@ -37,7 +37,7 @@ public strictfp class S2EdgeIndexTest extends GeometryTestCase {
     private static final Logger LOG = LoggerFactory.getLogger(S2EdgeIndexTest.class);
 
     public static class EdgeVectorIndex extends S2EdgeIndex {
-        private List<S2Edge> edges;
+        private final List<S2Edge> edges;
 
         public EdgeVectorIndex(List<S2Edge> edges) {
             this.edges = edges;

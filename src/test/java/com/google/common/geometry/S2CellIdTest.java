@@ -184,25 +184,25 @@ public strictfp class S2CellIdTest extends GeometryTestCase {
     @Test
     public void testContainment() {
         LOG.info("TestContainment");
-        Map<S2CellId, S2CellId> parentMap = new HashMap<S2CellId, S2CellId>();
-        ArrayList<S2CellId> cells = new ArrayList<S2CellId>();
+        Map<S2CellId, S2CellId> parentMap = new HashMap<>();
+        ArrayList<S2CellId> cells = new ArrayList<>();
         for (int face = 0; face < 6; ++face) {
             expandCell(S2CellId.fromFacePosLevel(face, 0, 0), cells, parentMap);
         }
         for (int i = 0; i < cells.size(); ++i) {
-            for (int j = 0; j < cells.size(); ++j) {
+            for (S2CellId cell : cells) {
                 boolean contained = true;
-                for (S2CellId id = cells.get(j); id != cells.get(i); id = parentMap.get(id)) {
+                for (S2CellId id = cell; id != cells.get(i); id = parentMap.get(id)) {
                     if (!parentMap.containsKey(id)) {
                         contained = false;
                         break;
                     }
                 }
-                assertEquals(cells.get(i).contains(cells.get(j)), contained);
-                assertEquals(cells.get(j).greaterOrEquals(cells.get(i).rangeMin())
-                        && cells.get(j).lessOrEquals(cells.get(i).rangeMax()), contained);
-                assertEquals(cells.get(i).intersects(cells.get(j)),
-                        cells.get(i).contains(cells.get(j)) || cells.get(j).contains(cells.get(i)));
+                assertEquals(cells.get(i).contains(cell), contained);
+                assertEquals(cell.greaterOrEquals(cells.get(i).rangeMin())
+                        && cell.lessOrEquals(cells.get(i).rangeMax()), contained);
+                assertEquals(cells.get(i).intersects(cell),
+                        cells.get(i).contains(cell) || cell.contains(cells.get(i)));
             }
         }
     }
@@ -251,8 +251,8 @@ public strictfp class S2CellIdTest extends GeometryTestCase {
         // at the given level. We then compare this against the result of finding
         // all the vertex neighbors of all the vertices of children of "id" at the
         // given level. These should give the same result.
-        ArrayList<S2CellId> all = new ArrayList<S2CellId>();
-        ArrayList<S2CellId> expected = new ArrayList<S2CellId>();
+        ArrayList<S2CellId> all = new ArrayList<>();
+        ArrayList<S2CellId> expected = new ArrayList<>();
         id.getAllNeighbors(level, all);
         S2CellId end = id.childEnd(level + 1);
         for (S2CellId c = id.childBegin(level + 1); !c.equals(end); c = c.next()) {
@@ -262,8 +262,8 @@ public strictfp class S2CellIdTest extends GeometryTestCase {
         // Sort the results and eliminate duplicates.
         Collections.sort(all);
         Collections.sort(expected);
-        Set<S2CellId> allSet = new HashSet<S2CellId>(all);
-        Set<S2CellId> expectedSet = new HashSet<S2CellId>(expected);
+        Set<S2CellId> allSet = new HashSet<>(all);
+        Set<S2CellId> expectedSet = new HashSet<>(expected);
         assertTrue(allSet.equals(expectedSet));
     }
 
@@ -281,7 +281,7 @@ public strictfp class S2CellIdTest extends GeometryTestCase {
         }
 
         // Check the vertex neighbors of the center of face 2 at level 5.
-        ArrayList<S2CellId> nbrs = new ArrayList<S2CellId>();
+        ArrayList<S2CellId> nbrs = new ArrayList<>();
         S2CellId.fromPoint(new S2Point(0, 0, 1)).getVertexNeighbors(5, nbrs);
         Collections.sort(nbrs);
         for (int i = 0; i < 4; ++i) {

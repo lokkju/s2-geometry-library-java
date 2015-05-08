@@ -271,7 +271,7 @@ public final strictfp class S2Loop implements S2Region, Comparable<S2Loop> {
         S2Point centroid = null;
         // Don't crash even if loop is not well-defined.
         if (numVertices() < 3) {
-            return new S2AreaCentroid(0D, centroid);
+            return new S2AreaCentroid(0D, null);
         }
 
         // The triangle area calculation becomes numerically unstable as the length
@@ -859,7 +859,7 @@ public final strictfp class S2Loop implements S2Region, Comparable<S2Loop> {
      */
     private int findVertex(S2Point p) {
         if (vertexToIndex == null) {
-            vertexToIndex = new HashMap<S2Point, Integer>();
+            vertexToIndex = new HashMap<>();
             for (int i = 1; i <= numVertices; i++) {
                 vertexToIndex.put(vertex(i), i);
             }

@@ -28,7 +28,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public strictfp class S2CellUnionTest extends GeometryTestCase {
-    public static Logger LOG = LoggerFactory.getLogger(S2CellUnionTest.class);
+    public static final Logger LOG = LoggerFactory.getLogger(S2CellUnionTest.class);
 
     @Test
     public void testBasic() {
@@ -64,7 +64,7 @@ public strictfp class S2CellUnionTest extends GeometryTestCase {
     public void testContainsCellUnion() {
         LOG.info("TestContainsCellUnion");
 
-        Set<S2CellId> randomCells = new HashSet<S2CellId>();
+        Set<S2CellId> randomCells = new HashSet<>();
         for (int i = 0; i < 100; i++) {
             randomCells.add(getRandomCellId(S2CellId.MAX_LEVEL));
         }
@@ -83,7 +83,7 @@ public strictfp class S2CellUnionTest extends GeometryTestCase {
         assertFalse(union.contains(unionPlusOne));
 
         // Build the set of parent cells and check containment
-        Set<S2CellId> parents = new HashSet<S2CellId>();
+        Set<S2CellId> parents = new HashSet<>();
         for (S2CellId cellId : union) {
             parents.add(cellId.parent());
         }
@@ -193,29 +193,29 @@ public strictfp class S2CellUnionTest extends GeometryTestCase {
             }
 
             // Test Contains(S2CellId) and Intersects(S2CellId).
-            for (int j = 0; j < input.size(); ++j) {
-                assertTrue(cellunion.contains(input.get(j)));
-                assertTrue(cellunion.intersects(input.get(j)));
-                if (!input.get(j).isFace()) {
-                    assertTrue(cellunion.intersects(input.get(j).parent()));
-                    if (input.get(j).level() > 1) {
-                        assertTrue(cellunion.intersects(input.get(j).parent().parent()));
-                        assertTrue(cellunion.intersects(input.get(j).parent(0)));
+            for (S2CellId anInput1 : input) {
+                assertTrue(cellunion.contains(anInput1));
+                assertTrue(cellunion.intersects(anInput1));
+                if (!anInput1.isFace()) {
+                    assertTrue(cellunion.intersects(anInput1.parent()));
+                    if (anInput1.level() > 1) {
+                        assertTrue(cellunion.intersects(anInput1.parent().parent()));
+                        assertTrue(cellunion.intersects(anInput1.parent(0)));
                     }
                 }
-                if (!input.get(j).isLeaf()) {
-                    assertTrue(cellunion.contains(input.get(j).childBegin()));
-                    assertTrue(cellunion.intersects(input.get(j).childBegin()));
-                    assertTrue(cellunion.contains(input.get(j).childEnd().prev()));
-                    assertTrue(cellunion.intersects(input.get(j).childEnd().prev()));
-                    assertTrue(cellunion.contains(input.get(j).childBegin(S2CellId.MAX_LEVEL)));
-                    assertTrue(cellunion.intersects(input.get(j).childBegin(S2CellId.MAX_LEVEL)));
+                if (!anInput1.isLeaf()) {
+                    assertTrue(cellunion.contains(anInput1.childBegin()));
+                    assertTrue(cellunion.intersects(anInput1.childBegin()));
+                    assertTrue(cellunion.contains(anInput1.childEnd().prev()));
+                    assertTrue(cellunion.intersects(anInput1.childEnd().prev()));
+                    assertTrue(cellunion.contains(anInput1.childBegin(S2CellId.MAX_LEVEL)));
+                    assertTrue(cellunion.intersects(anInput1.childBegin(S2CellId.MAX_LEVEL)));
                 }
             }
-            for (int j = 0; j < expected.size(); ++j) {
-                if (!expected.get(j).isFace()) {
-                    assertTrue(!cellunion.contains(expected.get(j).parent()));
-                    assertTrue(!cellunion.contains(expected.get(j).parent(0)));
+            for (S2CellId anExpected : expected) {
+                if (!anExpected.isFace()) {
+                    assertTrue(!cellunion.contains(anExpected.parent()));
+                    assertTrue(!cellunion.contains(anExpected.parent(0)));
                 }
             }
 
@@ -224,17 +224,17 @@ public strictfp class S2CellUnionTest extends GeometryTestCase {
             ArrayList<S2CellId> y = Lists.newArrayList();
             ArrayList<S2CellId> xOrY = Lists.newArrayList();
             ArrayList<S2CellId> xAndY = Lists.newArrayList();
-            for (int j = 0; j < input.size(); ++j) {
+            for (S2CellId anInput : input) {
                 boolean inX = random(2) == 0;
                 boolean inY = random(2) == 0;
                 if (inX) {
-                    x.add(input.get(j));
+                    x.add(anInput);
                 }
                 if (inY) {
-                    y.add(input.get(j));
+                    y.add(anInput);
                 }
                 if (inX || inY) {
-                    xOrY.add(input.get(j));
+                    xOrY.add(anInput);
                 }
             }
             S2CellUnion xCells = new S2CellUnion();
@@ -284,18 +284,18 @@ public strictfp class S2CellUnionTest extends GeometryTestCase {
             ArrayList<S2CellId> dummy = Lists.newArrayList();
 
             addCells(S2CellId.none(), false, test, dummy);
-            for (int j = 0; j < test.size(); ++j) {
+            for (S2CellId aTest : test) {
                 boolean contains = false, intersects = false;
-                for (int k = 0; k < expected.size(); ++k) {
-                    if (expected.get(k).contains(test.get(j))) {
+                for (S2CellId anExpected : expected) {
+                    if (anExpected.contains(aTest)) {
                         contains = true;
                     }
-                    if (expected.get(k).intersects(test.get(j))) {
+                    if (anExpected.intersects(aTest)) {
                         intersects = true;
                     }
                 }
-                assertEquals(cellunion.contains(test.get(j)), contains);
-                assertEquals(cellunion.intersects(test.get(j)), intersects);
+                assertEquals(cellunion.contains(aTest), contains);
+                assertEquals(cellunion.intersects(aTest), intersects);
             }
 
         }

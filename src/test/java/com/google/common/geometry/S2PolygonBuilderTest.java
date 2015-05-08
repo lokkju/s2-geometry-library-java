@@ -34,8 +34,8 @@ public strictfp class S2PolygonBuilderTest extends GeometryTestCase {
     // A chain represents either a polyline or a loop, depending
     // on whether "closed" is true.
     private class Chain {
-        String str;
-        boolean closed;
+        final String str;
+        final boolean closed;
 
         public Chain(String str, boolean closed) {
             this.str = str;
@@ -45,23 +45,23 @@ public strictfp class S2PolygonBuilderTest extends GeometryTestCase {
 
     private class TestCase {
         // +1 = undirected, -1 = directed, 0 = either one
-        int undirectedEdges;
+        final int undirectedEdges;
 
         // +1 = XOR, -1 = don't XOR, 0 = either one
-        int xorEdges;
+        final int xorEdges;
 
         // Minimum and maximum merge distances for this test case in degrees.
-        double minMerge;
-        double maxMerge;
+        final double minMerge;
+        final double maxMerge;
 
         // Each test case consists of a set of input loops and polylines.
-        Chain[] chainsIn;
+        final Chain[] chainsIn;
 
         // The expected set of output loops, directed appropriately.
-        String[] loopsOut;
+        final String[] loopsOut;
 
         // The expected number of unused edges.
-        int numUnusedEdges;
+        final int numUnusedEdges;
 
         public TestCase(int undirectedEdges,
                         int xorEdges,
@@ -80,7 +80,7 @@ public strictfp class S2PolygonBuilderTest extends GeometryTestCase {
         }
     }
 
-    TestCase[] testCases = new TestCase[]{
+    final TestCase[] testCases = new TestCase[]{
             // 0: No loops.
             new TestCase(0, 0, 0.0, 10.0, new Chain[]{new Chain(null, false)}, new String[]{}, 0),
 
@@ -288,8 +288,8 @@ public strictfp class S2PolygonBuilderTest extends GeometryTestCase {
     }
 
     private boolean findLoop(S2Loop loop, List<S2Loop> candidates, double maxError) {
-        for (int i = 0; i < candidates.size(); ++i) {
-            if (loopsEqual(loop, candidates.get(i), maxError)) {
+        for (S2Loop candidate : candidates) {
+            if (loopsEqual(loop, candidate, maxError)) {
                 return true;
             }
         }

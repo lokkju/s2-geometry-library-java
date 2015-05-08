@@ -17,10 +17,7 @@ package com.google.common.geometry;
 
 import com.google.common.base.Preconditions;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * An S2RegionCoverer is a class that allows arbitrary regions to be
@@ -91,7 +88,7 @@ public final strictfp class S2RegionCoverer {
      * A temporary variable used by GetCovering() that holds the cell ids that
      * have been added to the covering so far.
      */
-    private ArrayList<S2CellId> result;
+    private final ArrayList<S2CellId> result;
 
     static class Candidate {
         private S2Cell cell;
@@ -101,8 +98,8 @@ public final strictfp class S2RegionCoverer {
     }
 
     static class QueueEntry {
-        private int id;
-        private Candidate candidate;
+        private final int id;
+        private final Candidate candidate;
 
         public QueueEntry(int id, Candidate candidate) {
             this.id = id;
@@ -126,7 +123,7 @@ public final strictfp class S2RegionCoverer {
      * queue entries since for some reason priority_queue<> uses a deque by
      * default.
      */
-    private PriorityQueue<QueueEntry> candidateQueue;
+    private final PriorityQueue<QueueEntry> candidateQueue;
 
     /**
      * Default constructor, sets all fields to default values.
@@ -137,9 +134,9 @@ public final strictfp class S2RegionCoverer {
         levelMod = 1;
         maxCells = DEFAULT_MAX_CELLS;
         this.region = null;
-        result = new ArrayList<S2CellId>();
+        result = new ArrayList<>();
         // TODO(kirilll?): 10 is a completely random number, work out a better estimate
-        candidateQueue = new PriorityQueue<QueueEntry>(10, new QueueEntriesComparator());
+        candidateQueue = new PriorityQueue<>(10, new QueueEntriesComparator());
     }
 
     // Set the minimum and maximum cell level to be used. The default is to use
@@ -447,11 +444,11 @@ public final strictfp class S2RegionCoverer {
             if (level > 0) {
                 // Find the leaf cell containing the cap axis, and determine which
                 // subcell of the parent cell contains it.
-                ArrayList<S2CellId> base = new ArrayList<S2CellId>(4);
+                ArrayList<S2CellId> base = new ArrayList<>(4);
                 S2CellId id = S2CellId.fromPoint(cap.axis());
                 id.getVertexNeighbors(level, base);
-                for (int i = 0; i < base.size(); ++i) {
-                    addCandidate(newCandidate(new S2Cell(base.get(i))));
+                for (S2CellId aBase : base) {
+                    addCandidate(newCandidate(new S2Cell(aBase)));
                 }
                 return;
             }
@@ -515,8 +512,8 @@ public final strictfp class S2RegionCoverer {
      * cells are returned in arbitrary order.
      */
     private static void floodFill(S2Region region, S2CellId start, ArrayList<S2CellId> output) {
-        HashSet<S2CellId> all = new HashSet<S2CellId>();
-        ArrayList<S2CellId> frontier = new ArrayList<S2CellId>();
+        HashSet<S2CellId> all = new HashSet<>();
+        ArrayList<S2CellId> frontier = new ArrayList<>();
         output.clear();
         all.add(start);
         frontier.add(start);

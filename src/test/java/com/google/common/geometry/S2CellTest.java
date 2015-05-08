@@ -32,8 +32,8 @@ public strictfp class S2CellTest extends GeometryTestCase {
 
     @Test
     public void testFaces() {
-        Map<S2Point, Integer> edgeCounts = new HashMap<S2Point, Integer>();
-        Map<S2Point, Integer> vertexCounts = new HashMap<S2Point, Integer>();
+        Map<S2Point, Integer> edgeCounts = new HashMap<>();
+        Map<S2Point, Integer> vertexCounts = new HashMap<>();
         for (int face = 0; face < 6; ++face) {
             S2CellId id = S2CellId.fromFacePosLevel(face, 0, 0);
             S2Cell cell = new S2Cell(id);
@@ -104,7 +104,7 @@ public strictfp class S2CellTest extends GeometryTestCase {
         }
     }
 
-    static List<LevelStats> levelStats = new ArrayList<LevelStats>(
+    static final List<LevelStats> levelStats = new ArrayList<>(
             S2CellId.MAX_LEVEL + 1);
 
     static {

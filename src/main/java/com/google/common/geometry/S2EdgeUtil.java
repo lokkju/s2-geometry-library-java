@@ -338,7 +338,7 @@ public final strictfp class S2EdgeUtil {
      */
     public static class LongitudePruner {
         // The interval to be tested against.
-        private S1Interval interval;
+        private final S1Interval interval;
 
         // The longitude of the next v0.
         private double lng0;

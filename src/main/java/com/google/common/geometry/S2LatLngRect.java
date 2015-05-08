@@ -265,14 +265,13 @@ public final strictfp class S2LatLngRect implements S2Region {
      */
     public S1Angle getDistance(S2LatLngRect other) {
         S2LatLngRect a = this;
-        S2LatLngRect b = other;
 
         Preconditions.checkState(!a.isEmpty());
-        Preconditions.checkArgument(!b.isEmpty());
+        Preconditions.checkArgument(!other.isEmpty());
 
         // First, handle the trivial cases where the longitude intervals overlap.
-        if (a.lng().intersects(b.lng())) {
-            if (a.lat().intersects(b.lat())) {
+        if (a.lng().intersects(other.lng())) {
+            if (a.lat().intersects(other.lat())) {
                 return S1Angle.radians(0);  // Intersection between a and b.
             }
 
@@ -281,12 +280,12 @@ public final strictfp class S2LatLngRect implements S2Region {
             // longitude connecting the high-latitude of the lower rect with the
             // low-latitude of the higher rect.
             S1Angle lo, hi;
-            if (a.lat().lo() > b.lat().hi()) {
-                lo = b.latHi();
+            if (a.lat().lo() > other.lat().hi()) {
+                lo = other.latHi();
                 hi = a.latLo();
             } else {
                 lo = a.latHi();
-                hi = b.latLo();
+                hi = other.latLo();
             }
             return S1Angle.radians(hi.radians() - lo.radians());
         }
@@ -295,14 +294,14 @@ public final strictfp class S2LatLngRect implements S2Region {
         // occur somewhere on the pair of longitudinal edges which are nearest in
         // longitude-space.
         S1Angle aLng, bLng;
-        S1Interval loHi = S1Interval.fromPointPair(a.lng().lo(), b.lng().hi());
-        S1Interval hiLo = S1Interval.fromPointPair(a.lng().hi(), b.lng().lo());
+        S1Interval loHi = S1Interval.fromPointPair(a.lng().lo(), other.lng().hi());
+        S1Interval hiLo = S1Interval.fromPointPair(a.lng().hi(), other.lng().lo());
         if (loHi.getLength() < hiLo.getLength()) {
             aLng = a.lngLo();
-            bLng = b.lngHi();
+            bLng = other.lngHi();
         } else {
             aLng = a.lngHi();
-            bLng = b.lngLo();
+            bLng = other.lngLo();
         }
 
         // The shortest distance between the two longitudinal segments will include
@@ -314,8 +313,8 @@ public final strictfp class S2LatLngRect implements S2Region {
         S2Point aHi = new S2LatLng(a.latHi(), aLng).toPoint();
         S2Point aLoCrossHi =
                 S2LatLng.fromRadians(0, aLng.radians() - S2.M_PI_2).normalized().toPoint();
-        S2Point bLo = new S2LatLng(b.latLo(), bLng).toPoint();
-        S2Point bHi = new S2LatLng(b.latHi(), bLng).toPoint();
+        S2Point bLo = new S2LatLng(other.latLo(), bLng).toPoint();
+        S2Point bHi = new S2LatLng(other.latHi(), bLng).toPoint();
         S2Point bLoCrossHi =
                 S2LatLng.fromRadians(0, bLng.radians() - S2.M_PI_2).normalized().toPoint();
 

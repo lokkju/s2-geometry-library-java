@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 public strictfp class S2Test extends GeometryTestCase {
 
-    private static Logger LOG = LoggerFactory.getLogger(S2Test.class);
+    private static final Logger LOG = LoggerFactory.getLogger(S2Test.class);
 
     // Test helper methods for testing the traversal order.
     private static int swapAxes(int ij) {
@@ -219,9 +219,9 @@ public strictfp class S2Test extends GeometryTestCase {
             this.avg_ = avg;
         }
 
-        S2.Metric min_;
-        S2.Metric max_;
-        S2.Metric avg_;
+        final S2.Metric min_;
+        final S2.Metric max_;
+        final S2.Metric avg_;
     }
 
     private void minMaxAvg(MetricBundle bundle) {

@@ -28,6 +28,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+@SuppressWarnings("RedundantCast")
 public final class MoreAsserts {
 
     private MoreAsserts() {
@@ -51,7 +52,7 @@ public final class MoreAsserts {
      */
     public static void assertContentsAnyOrder(
             Iterable<?> actual, Object... expected) {
-        assertContentsAnyOrder((String) null, actual, expected);
+        assertContentsAnyOrder(null, actual, expected);
     }
 
     /**
@@ -115,7 +116,7 @@ public final class MoreAsserts {
     public static <T> void assertContentsAnyOrder(
             Iterable<? extends T> expected, Iterable<? extends T> actual,
             Comparator<? super T> comparator) {
-        assertContentsAnyOrder((String) null, expected, actual, comparator);
+        assertContentsAnyOrder(null, expected, actual, comparator);
     }
 
     private static void failNotEqual(String message, Object expected,

@@ -49,7 +49,7 @@ import java.util.*;
 public final strictfp class S2Polygon implements S2Region, Comparable<S2Polygon> {
     private static final Logger LOG = LoggerFactory.getLogger(S2Polygon.class);
 
-    private List<S2Loop> loops;
+    private final List<S2Loop> loops;
 
     private S2LatLngRect bound;
     private boolean hasHoles;
@@ -490,15 +490,13 @@ public final strictfp class S2Polygon implements S2Region, Comparable<S2Polygon>
         @Override
         public S2Point edgeFrom(int index) {
             S2Edge fromTo = edgeFromTo(index);
-            S2Point from = fromTo.getStart();
-            return from;
+            return fromTo.getStart();
         }
 
         @Override
         protected S2Point edgeTo(int index) {
             S2Edge fromTo = edgeFromTo(index);
-            S2Point to = fromTo.getEnd();
-            return to;
+            return fromTo.getEnd();
         }
     }
 
@@ -751,12 +749,12 @@ public final strictfp class S2Polygon implements S2Region, Comparable<S2Polygon>
             Iterator<Map.Entry<Integer, S2Polygon>> smallestIter = queueSet.iterator();
 
             Map.Entry<Integer, S2Polygon> smallest = smallestIter.next();
-            int aSize = smallest.getKey().intValue();
+            int aSize = smallest.getKey();
             S2Polygon aPolygon = smallest.getValue();
             smallestIter.remove();
 
             smallest = smallestIter.next();
-            int bSize = smallest.getKey().intValue();
+            int bSize = smallest.getKey();
             S2Polygon bPolygon = smallest.getValue();
             smallestIter.remove();
 

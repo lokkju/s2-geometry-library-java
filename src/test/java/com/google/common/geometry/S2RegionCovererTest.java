@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public strictfp class S2RegionCovererTest extends GeometryTestCase {
-    private static Logger LOG = LoggerFactory.getLogger(S2RegionCovererTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(S2RegionCovererTest.class);
 
     @Test
     public void testRandomCells() {
@@ -47,13 +47,13 @@ public strictfp class S2RegionCovererTest extends GeometryTestCase {
 
     public void checkCovering(S2RegionCoverer coverer, S2Region region, ArrayList<S2CellId> covering, boolean interior) {
         // Keep track of how many cells have the same coverer.min_level() ancestor.
-        HashMap<S2CellId, Integer> minLevelCells = new HashMap<S2CellId, Integer>();
-        for (int i = 0; i < covering.size(); ++i) {
-            int level = covering.get(i).level();
+        HashMap<S2CellId, Integer> minLevelCells = new HashMap<>();
+        for (S2CellId aCovering1 : covering) {
+            int level = aCovering1.level();
             assertTrue(level >= coverer.minLevel());
             assertTrue(level <= coverer.maxLevel());
             assertEquals((level - coverer.minLevel()) % coverer.levelMod(), 0);
-            S2CellId key = covering.get(i).parent(coverer.minLevel());
+            S2CellId key = aCovering1.parent(coverer.minLevel());
             if (!minLevelCells.containsKey(key)) {
                 minLevelCells.put(key, 1);
             } else {
@@ -69,8 +69,8 @@ public strictfp class S2RegionCovererTest extends GeometryTestCase {
         }
 
         if (interior) {
-            for (int i = 0; i < covering.size(); ++i) {
-                assertTrue(region.contains(new S2Cell(covering.get(i))));
+            for (S2CellId aCovering : covering) {
+                assertTrue(region.contains(new S2Cell(aCovering)));
             }
         } else {
             S2CellUnion cellUnion = new S2CellUnion();
@@ -95,8 +95,8 @@ public strictfp class S2RegionCovererTest extends GeometryTestCase {
             double maxArea = Math.min(
                     4 * S2.M_PI, (3 * coverer.maxCells() + 1) * S2Cell.averageArea(coverer.minLevel()));
             S2Cap cap = getRandomCap(0.1 * S2Cell.averageArea(kMaxLevel), maxArea);
-            ArrayList<S2CellId> covering = new ArrayList<S2CellId>();
-            ArrayList<S2CellId> interior = new ArrayList<S2CellId>();
+            ArrayList<S2CellId> covering = new ArrayList<>();
+            ArrayList<S2CellId> interior = new ArrayList<>();
 
             coverer.getCovering(cap, covering);
             checkCovering(coverer, cap, covering, false);
@@ -106,7 +106,7 @@ public strictfp class S2RegionCovererTest extends GeometryTestCase {
 
 
             // Check that GetCovering is deterministic.
-            ArrayList<S2CellId> covering2 = new ArrayList<S2CellId>();
+            ArrayList<S2CellId> covering2 = new ArrayList<>();
             coverer.getCovering(cap, covering2);
             assertTrue(covering.equals(covering2));
 
@@ -116,7 +116,7 @@ public strictfp class S2RegionCovererTest extends GeometryTestCase {
             // children of the same parent.
             S2CellUnion cells = new S2CellUnion();
             cells.initFromCellIds(covering);
-            ArrayList<S2CellId> denormalized = new ArrayList<S2CellId>();
+            ArrayList<S2CellId> denormalized = new ArrayList<>();
             cells.denormalize(coverer.minLevel(), coverer.levelMod(), denormalized);
             checkCovering(coverer, cap, denormalized, false);
         }
@@ -135,7 +135,7 @@ public strictfp class S2RegionCovererTest extends GeometryTestCase {
             coverer.setMaxLevel(level);
             double maxArea = Math.min(4 * S2.M_PI, 1000 * S2Cell.averageArea(level));
             S2Cap cap = getRandomCap(0.1 * S2Cell.averageArea(kMaxLevel), maxArea);
-            ArrayList<S2CellId> covering = new ArrayList<S2CellId>();
+            ArrayList<S2CellId> covering = new ArrayList<>();
             S2RegionCoverer.getSimpleCovering(cap, cap.axis(), level, covering);
             checkCovering(coverer, cap, covering, false);
         }

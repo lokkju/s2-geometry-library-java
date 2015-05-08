@@ -40,49 +40,49 @@ public strictfp class S2LoopTest extends GeometryTestCase {
     private static final Logger LOG = LoggerFactory.getLogger(S2LoopTest.class);
 
     // A stripe that slightly over-wraps the equator.
-    private S2Loop candyCane = makeLoop("-20:150, -20:-70, 0:70, 10:-150, 10:70, -10:-70");
+    private final S2Loop candyCane = makeLoop("-20:150, -20:-70, 0:70, 10:-150, 10:70, -10:-70");
 
     // A small clockwise loop in the northern & eastern hemisperes.
-    private S2Loop smallNeCw = makeLoop("35:20, 45:20, 40:25");
+    private final S2Loop smallNeCw = makeLoop("35:20, 45:20, 40:25");
 
     // Loop around the north pole at 80 degrees.
-    private S2Loop arctic80 = makeLoop("80:-150, 80:-30, 80:90");
+    private final S2Loop arctic80 = makeLoop("80:-150, 80:-30, 80:90");
 
     // Loop around the south pole at 80 degrees.
-    private S2Loop antarctic80 = makeLoop("-80:120, -80:0, -80:-120");
+    private final S2Loop antarctic80 = makeLoop("-80:120, -80:0, -80:-120");
 
     // The northern hemisphere, defined using two pairs of antipodal points.
     private S2Loop northHemi = makeLoop("0:-180, 0:-90, 0:0, 0:90");
 
     // The northern hemisphere, defined using three points 120 degrees apart.
-    private S2Loop northHemi3 = makeLoop("0:-180, 0:-60, 0:60");
+    private final S2Loop northHemi3 = makeLoop("0:-180, 0:-60, 0:60");
 
     // The western hemisphere, defined using two pairs of antipodal points.
     private S2Loop westHemi = makeLoop("0:-180, -90:0, 0:0, 90:0");
 
     // The "near" hemisphere, defined using two pairs of antipodal points.
-    private S2Loop nearHemi = makeLoop("0:-90, -90:0, 0:90, 90:0");
+    private final S2Loop nearHemi = makeLoop("0:-90, -90:0, 0:90, 90:0");
 
     // A diamond-shaped loop around the point 0:180.
-    private S2Loop loopA = makeLoop("0:178, -1:180, 0:-179, 1:-180");
+    private final S2Loop loopA = makeLoop("0:178, -1:180, 0:-179, 1:-180");
 
     // Another diamond-shaped loop around the point 0:180.
-    private S2Loop loopB = makeLoop("0:179, -1:180, 0:-178, 1:-180");
+    private final S2Loop loopB = makeLoop("0:179, -1:180, 0:-178, 1:-180");
 
     // The intersection of A and B.
-    private S2Loop aIntersectB = makeLoop("0:179, -1:180, 0:-179, 1:-180");
+    private final S2Loop aIntersectB = makeLoop("0:179, -1:180, 0:-179, 1:-180");
 
     // The union of A and B.
-    private S2Loop aUnionB = makeLoop("0:178, -1:180, 0:-178, 1:-180");
+    private final S2Loop aUnionB = makeLoop("0:178, -1:180, 0:-178, 1:-180");
 
     // A minus B (concave)
-    private S2Loop aMinusB = makeLoop("0:178, -1:180, 0:179, 1:-180");
+    private final S2Loop aMinusB = makeLoop("0:178, -1:180, 0:179, 1:-180");
 
     // B minus A (concave)
-    private S2Loop bMinusA = makeLoop("0:-179, -1:180, 0:-178, 1:-180");
+    private final S2Loop bMinusA = makeLoop("0:-179, -1:180, 0:-178, 1:-180");
 
     // A self-crossing loop with a duplicated vertex
-    private S2Loop bowtie = makeLoop("0:0, 2:0, 1:1, 0:2, 2:2, 1:1");
+    private final S2Loop bowtie = makeLoop("0:0, 2:0, 1:1, 0:2, 2:2, 1:1");
 
     // Initialized below.
     private S2Loop southHemi;
@@ -227,8 +227,8 @@ public strictfp class S2LoopTest extends GeometryTestCase {
             }
             for (S2Point point : points) {
                 int count = 0;
-                for (int j = 0; j < loops.size(); ++j) {
-                    if (loops.get(j).contains(point)) {
+                for (S2Loop loop : loops) {
+                    if (loop.contains(point)) {
                         ++count;
                     }
                 }
