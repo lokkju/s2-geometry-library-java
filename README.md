@@ -1,11 +1,15 @@
-s2-geometry-library-java
+s2-geometry-reloaded
 ========================
 
 A Fork of - https://code.google.com/p/s2-geometry-library-java/
 
-Maven
+Usage
 =====
-Enabled dependency management and builds via Maven. 
+To add this library to your project, use jitpack.io: https://jitpack.io/#lokkju/s2-geometry-reloaded
+
+Gradle
+=====
+Enabled dependency management and builds via Gradle. 
 
 Upgrades
 ========
